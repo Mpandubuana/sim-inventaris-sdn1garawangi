@@ -3,134 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Sekretaris Sekolah - SIM Inventaris SDN 1 Garawangi</title>
+  <title>Dashboard Sekretaris Sekolah - Sistem Inventaris Aset SDN 1 Garawangi</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
   <div class="dashboard-wrapper">
-    <!-- Sidebar Navigasi Sekretaris -->
     <aside class="sidebar">
       <div class="brand">
         <h3>SDN 1 Garawangi</h3>
         <span>Role: Sekretaris Sekolah</span>
       </div>
       <nav class="nav-menu">
-        <a href="#ringkasan" class="active">📌 Ringkasan Administrasi</a>
-        <a href="#kodefikasi">🏷️ Kodefikasi Aset Baru</a>
-        <a href="#berita-acara">📄 Buat Berita Acara</a>
-        <a href="#arsip-dokumen">🗂️ Arsip Dokumen Inventaris</a>
-        <a href="#" onclick="resetDataDemo()">🔄 Reset Data Demo</a>
+        <a href="#ringkasan" class="active">📊 Dashboard Statistik</a>
+        <a href="#penyaluran-dana">💸 Menyalurkan Dana</a>
+        <a href="#riwayat-dana">🗂️ Riwayat Penyaluran</a>
         <a href="#" onclick="logout()" class="logout">🚪 Logout</a>
       </nav>
     </aside>
 
-    <!-- Konten Utama -->
     <main class="main-content">
       <header class="topbar">
-        <h2>Dashboard Administrasi & Kesekretariatan Inventaris</h2>
+        <h2>Dashboard Keuangan & Administrasi Sekretaris Sekolah</h2>
         <div class="user-profile">
-          <span>Sekretaris / TU: <strong>Ibu Siti Rahmawati, S.AP.</strong></span>
+          <span>Sekretaris: <strong id="nama-user-login">Ibu Siti Rahmawati, S.AP.</strong></span>
           <button type="button" id="theme-toggle" class="btn-theme" onclick="toggleTema()" title="Ganti Mode Terang/Gelap">🌙</button>
         </div>
       </header>
 
-      <!-- Section Ringkasan Administrasi -->
+      <!-- 1. Melihat Dashboard Statistik -->
       <section id="ringkasan" class="cards-grid">
-        <div class="card card-blue">
-          <h4>Dokumen BAST Terbit</h4>
-          <p class="card-num" id="sek-bast">0 Dokumen</p>
+        <div class="card">
+          <h4>Siap Salur Dana</h4>
+          <p class="card-num" id="sek-siap">0 Pengajuan</p>
         </div>
-        <div class="card card-yellow">
-          <h4>Menunggu Kodefikasi</h4>
-          <p class="card-num" id="sek-pending">0 Aset Baru</p>
+        <div class="card">
+          <h4>Dana Tersalurkan</h4>
+          <p class="card-num" id="sek-selesai">0 Transaksi</p>
         </div>
-        <div class="card card-green">
-          <h4>Surat Pengadaan Sah</h4>
-          <p class="card-num" id="sek-surat">0 Surat</p>
+        <div class="card">
+          <h4>Total Anggaran Cair</h4>
+          <p class="card-num" id="sek-nominal">Rp 0</p>
         </div>
-        <div class="card card-red">
-          <h4>SK Penghapusan Aset</h4>
-          <p class="card-num" id="sek-sk">0 Dokumen</p>
+        <div class="card">
+          <h4>Total Aset Terdata</h4>
+          <p class="card-num" id="sek-aset">0 Unit</p>
         </div>
       </section>
 
-      <!-- Form Kodefikasi & Pembuatan Berita Acara (2 Kolom) -->
-      <div class="form-grid">
-        <!-- Form Registrasi & Kodefikasi Aset -->
-        <section id="kodefikasi" class="content-box">
-          <h3>🏷️ Registrasi & Kodefikasi Aset Resmi</h3>
-          <form id="form-kodefikasi">
+      <!-- 2. Menyalurkan Dana Pembelian -->
+      <section id="penyaluran-dana" class="content-box">
+        <h3>💸 Menyalurkan Dana Pembelian Aset (Disetujui Kepala Sekolah)</h3>
+        <form id="form-penyaluran">
+          <div class="form-grid">
             <div class="form-group">
-              <label for="asal-barang">Barang Disetujui (Dari Pengadaan)</label>
-              <select id="asal-barang" required>
-                <option value="">-- Pilih Barang yang Sudah Disetujui Kepsek --</option>
-              </select>
+              <label for="pilih-pengadaan">Pilih Pengajuan Pembelian yang Disetujui</label>
+              <select id="pilih-pengadaan" required></select>
             </div>
 
             <div class="form-group">
-              <label for="kode-aset">Nomor Kode Inventaris Sekolah</label>
-              <input type="text" id="kode-aset" placeholder="Contoh: INV/SDN1/2026/004" required>
+              <label for="nomor-bukti">Nomor Bukti Pencairan / BAST</label>
+              <input type="text" id="nomor-bukti" placeholder="Contoh: 421.2/045/KUITANSI-SDN1/2026" required>
             </div>
 
             <div class="form-group">
-              <label for="sumber-dana">Sumber Anggaran / Perolehan</label>
+              <label for="sumber-dana">Sumber Anggaran Sekolah</label>
               <select id="sumber-dana" required>
-                <option value="bos">Dana BOS Reguler</option>
-                <option value="hibah">Hibah Pemerintah Daerah</option>
-                <option value="komite">Sumbangan Komite Sekolah</option>
-              </select>
-            </div>
-
-            <button type="submit" class="btn-login">Simpan & Terbitkan Label Kode</button>
-          </form>
-        </section>
-
-        <!-- Form Pembuatan Berita Acara Serah Terima (BAST) -->
-        <section id="berita-acara" class="content-box">
-          <h3>📄 Buat Berita Acara Serah Terima (BAST)</h3>
-          <form id="form-bast">
-            <div class="form-group">
-              <label for="nomor-surat">Nomor Surat Berita Acara</label>
-              <input type="text" id="nomor-surat" placeholder="Contoh: 421.2/045/BAST-SDN1/2026" required>
-            </div>
-
-            <div class="form-group">
-              <label for="jenis-ba">Jenis Berita Acara</label>
-              <select id="jenis-ba" required>
-                <option value="terima">BAST Penerimaan Barang Baru</option>
-                <option value="hapus">Berita Acara Penghapusan Barang Rusak</option>
-                <option value="mutasi">Berita Acara Pemindahan Ruang</option>
+                <option value="Dana BOS Reguler">Dana BOS Reguler</option>
+                <option value="Hibah Pemerintah Daerah">Hibah Pemerintah Daerah</option>
+                <option value="Anggaran Komite Sekolah">Anggaran Komite Sekolah</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="tgl-surat">Tanggal Pengesahan Dokumen</label>
-              <input type="date" id="tgl-surat" required>
+              <label for="tgl-salur">Tanggal Penyaluran Dana</label>
+              <input type="date" id="tgl-salur" required>
             </div>
+          </div>
 
-            <button type="submit" class="btn-login">Arsipkan Berita Acara</button>
-          </form>
-        </section>
-      </div>
+          <div class="form-group">
+            <label for="penerima-dana">Penerima / Keterangan Penyaluran</label>
+            <input type="text" id="penerima-dana" placeholder="Contoh: Diserahkan ke Admin Sarpras untuk pembelian langsung" required>
+          </div>
 
-      <!-- Section Arsip Dokumen Administrasi (Diisi otomatis oleh js/sekretaris.js) -->
-      <section id="arsip-dokumen" class="content-box">
-        <h3>🗂️ Daftar Arsip Surat & Berita Acara Inventaris</h3>
+          <button type="submit" class="btn-login" style="width: auto; padding: 0.75rem 1.5rem;">Salurkan Dana Pembelian</button>
+        </form>
+      </section>
+
+      <!-- Riwayat Penyaluran Dana -->
+      <section id="riwayat-dana" class="content-box">
+        <h3>🗂️ Riwayat Penyaluran Dana Pembelian</h3>
         <div class="table-responsive">
           <table>
             <thead>
               <tr>
-                <th>Nomor Surat</th>
+                <th>No. Bukti / BAST</th>
                 <th>Tanggal</th>
-                <th>Perihal Dokumen</th>
-                <th>Sumber Dana</th>
-                <th>Status Pengesahan</th>
-                <th>Dokumen</th>
+                <th>Nama Barang</th>
+                <th>Jumlah</th>
+                <th>Nominal Dana</th>
+                <th>Sumber Anggaran</th>
+                <th>Penerima</th>
+                <th>Status</th>
               </tr>
             </thead>
-            <tbody id="tabel-arsip"></tbody>
+            <tbody id="tabel-penyaluran"></tbody>
           </table>
         </div>
       </section>

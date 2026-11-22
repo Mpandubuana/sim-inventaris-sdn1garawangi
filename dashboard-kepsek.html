@@ -3,67 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Kepala Sekolah - SIM Inventaris SDN 1 Garawangi</title>
+  <title>Dashboard Kepala Sekolah - Sistem Inventaris Aset SDN 1 Garawangi</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
   <div class="dashboard-wrapper">
-    <!-- Sidebar Navigasi Kepala Sekolah -->
     <aside class="sidebar">
       <div class="brand">
         <h3>SDN 1 Garawangi</h3>
         <span>Role: Kepala Sekolah</span>
       </div>
       <nav class="nav-menu">
-        <a href="#ringkasan" class="active">📌 Ringkasan Eksekutif</a>
-        <a href="#persetujuan-pengadaan">✅ Persetujuan Pengadaan</a>
-        <a href="#persetujuan-penghapusan">🗑️ Persetujuan Penghapusan</a>
-        <a href="#laporan">📊 Laporan & Cetak</a>
-        <a href="#" onclick="resetDataDemo()">🔄 Reset Data Demo</a>
+        <a href="#ringkasan" class="active">📊 Dashboard Statistik</a>
+        <a href="#persetujuan-pengadaan">✅ Persetujuan Pembelian</a>
+        <a href="#persetujuan-penghapusan">🔧 Tindak Lanjut Kerusakan</a>
+        <a href="#laporan">🖨️ Laporan & Cetak</a>
         <a href="#" onclick="logout()" class="logout">🚪 Logout</a>
       </nav>
     </aside>
 
-    <!-- Konten Utama -->
     <main class="main-content">
       <header class="topbar">
         <h2>Dashboard Monitoring & Persetujuan Kepala Sekolah</h2>
         <div class="user-profile">
-          <span>Kepala Sekolah: <strong>Bpk. H. Mulyana, M.Pd.</strong></span>
+          <span>Kepala Sekolah: <strong id="nama-user-login">Bpk. H. Mulyana, M.Pd.</strong></span>
           <button type="button" id="theme-toggle" class="btn-theme" onclick="toggleTema()" title="Ganti Mode Terang/Gelap">🌙</button>
         </div>
       </header>
 
-      <!-- Section Ringkasan Eksekutif -->
+      <!-- 1. Melihat Dashboard Statistik -->
       <section id="ringkasan" class="cards-grid">
-        <div class="card card-blue">
+        <div class="card">
           <h4>Total Aset Sekolah</h4>
           <p class="card-num" id="kepsek-total">0 Unit</p>
         </div>
-        <div class="card card-yellow">
-          <h4>Pengadaan Menunggu</h4>
-          <p class="card-num" id="kepsek-pending">0 Usulan</p>
+        <div class="card">
+          <h4>Pengajuan Pembelian</h4>
+          <p class="card-num" id="kepsek-pending">0 Menunggu</p>
         </div>
-        <div class="card card-red">
-          <h4>Usulan Penghapusan</h4>
-          <p class="card-num" id="kepsek-hapus">0 Barang</p>
+        <div class="card">
+          <h4>Laporan Kerusakan</h4>
+          <p class="card-num" id="kepsek-hapus">0 Menunggu</p>
         </div>
-        <div class="card card-green">
-          <h4>Kondisi Baik</h4>
+        <div class="card">
+          <h4>Persentase Kondisi Baik</h4>
           <p class="card-num" id="kepsek-baik">0%</p>
         </div>
       </section>
 
-      <!-- Section Persetujuan Usulan Pengadaan -->
+      <!-- 2. Menyetujui/Menolak Pengajuan Pembelian -->
       <section id="persetujuan-pengadaan" class="content-box">
-        <h3>✅ Persetujuan Usulan Pengadaan Barang Baru</h3>
+        <h3>✅ Menyetujui / Menolak Pengajuan Pembelian</h3>
         <div class="table-responsive">
           <table>
             <thead>
               <tr>
-                <th>Tgl Usulan</th>
+                <th>Tgl Pengajuan</th>
                 <th>Pengusul</th>
                 <th>Nama Barang</th>
                 <th>Kategori</th>
@@ -78,19 +75,20 @@
         </div>
       </section>
 
-      <!-- Section Persetujuan Penghapusan Barang Rusak -->
+      <!-- 3. Menindaklanjuti Laporan Kerusakan -->
       <section id="persetujuan-penghapusan" class="content-box">
-        <h3>🗑️ Persetujuan Penghapusan Aset Rusak Berat</h3>
+        <h3>🔧 Menindaklanjuti Laporan Kerusakan Aset</h3>
         <div class="table-responsive">
           <table>
             <thead>
               <tr>
-                <th>Kode</th>
+                <th>Tanggal</th>
+                <th>Kode Aset</th>
                 <th>Nama Barang</th>
                 <th>Jumlah</th>
-                <th>Kondisi Kerusakan</th>
-                <th>Keterangan Sarpras</th>
-                <th>Tindakan Kepsek</th>
+                <th>Tingkat Kerusakan</th>
+                <th>Keterangan Admin</th>
+                <th>Tindak Lanjut Kepsek</th>
               </tr>
             </thead>
             <tbody id="tabel-acc-penghapusan"></tbody>
@@ -98,22 +96,17 @@
         </div>
       </section>
 
-      <!-- Section Laporan Rekapitulasi & Cetak -->
+      <!-- 4. Melihat & Mencetak Laporan -->
       <section id="laporan" class="content-box">
-        <h3>📊 Rekapitulasi & Cetak Laporan Inventaris</h3>
+        <h3>🖨️ Melihat & Mencetak Laporan Inventaris</h3>
         <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
-          Filter data inventaris sekolah untuk pratinjau atau dicetak sebagai dokumen pertanggungjawaban.
+          Filter data inventaris sekolah untuk pratinjau atau dicetak sebagai dokumen laporan resmi.
         </p>
 
         <div class="form-grid" style="margin-bottom: 1rem;">
           <div class="form-group">
             <label for="filter-kategori">Filter Kategori</label>
-            <select id="filter-kategori">
-              <option value="semua">-- Semua Kategori --</option>
-              <option value="elektronik">Elektronik / TIK</option>
-              <option value="audio">Audio / Visual</option>
-              <option value="mebel">Mebel & Perabot</option>
-            </select>
+            <select id="filter-kategori"></select>
           </div>
           <div class="form-group">
             <label for="filter-kondisi">Filter Kondisi</label>
@@ -126,10 +119,9 @@
         </div>
 
         <button type="button" onclick="window.print()" class="btn-login" style="width: auto; padding: 0.75rem 1.5rem;">
-          🖨️ Cetak / Download PDF Laporan
+          🖨️ Cetak / Simpan PDF Laporan
         </button>
 
-        <!-- Tabel Pratinjau Laporan -->
         <div class="table-responsive" style="margin-top: 1.5rem;">
           <table>
             <thead>
@@ -137,9 +129,10 @@
                 <th>Kode Aset</th>
                 <th>Nama Barang</th>
                 <th>Kategori</th>
+                <th>Lokasi</th>
                 <th>Total</th>
-                <th>Kondisi Baik</th>
-                <th>Kondisi Rusak</th>
+                <th>Baik</th>
+                <th>Rusak</th>
               </tr>
             </thead>
             <tbody id="tabel-laporan-kepsek"></tbody>

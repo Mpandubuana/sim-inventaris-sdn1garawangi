@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - Sistem Inventaris Aset SDN 1 Garawangi</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="sidebar">
+      <div class="brand">
+        <h3>SDN 1 Garawangi</h3>
+        <span>Role: Admin</span>
+      </div>
+      <nav class="nav-menu">
+        <a href="#ringkasan" class="active">📊 Dashboard Statistik</a>
+        <a href="#inventaris-aset">📦 Data Inventaris Aset</a>
+        <a href="#laporan-kerusakan">🔧 Laporan Kerusakan</a>
+        <a href="#pengajuan-pembelian">🛒 Pengajuan Pembelian</a>
+        <a href="#data-master">🗂️ Data Master</a>
+        <a href="#kelola-akun">👤 Akun Pengguna</a>
+        <a href="#" onclick="logout()" class="logout">🚪 Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h2>Dashboard Administrator Inventaris Aset</h2>
+        <div class="user-profile">
+          <span>Admin: <strong id="nama-user-login">Bpk. Ahmad</strong></span>
+          <button type="button" id="theme-toggle" class="btn-theme" onclick="toggleTema()" title="Ganti Mode Terang/Gelap">🌙</button>
+        </div>
+      </header>
+
+      <!-- 1. Melihat Dashboard Statistik -->
+      <section id="ringkasan" class="cards-grid">
+        <div class="card">
+          <h4>Total Unit Aset</h4>
+          <p class="card-num" id="stat-total">0 Unit</p>
+        </div>
+        <div class="card">
+          <h4>Kondisi Rusak</h4>
+          <p class="card-num" id="stat-rusak">0 Unit</p>
+        </div>
+        <div class="card">
+          <h4>Pengajuan Pembelian</h4>
+          <p class="card-num" id="stat-pengajuan">0 Usulan</p>
+        </div>
+        <div class="card">
+          <h4>Total Akun Pengguna</h4>
+          <p class="card-num" id="stat-akun">0 Akun</p>
+        </div>
+      </section>
+
+      <!-- 2. Mengelola Data Inventaris Aset -->
+      <section id="inventaris-aset" class="content-box">
+        <h3>📦 Mengelola Data Inventaris Aset</h3>
+        <form id="form-tambah-aset" style="margin-bottom: 1.5rem;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="kode-aset-baru">Kode Inventaris</label>
+              <input type="text" id="kode-aset-baru" placeholder="Contoh: INV/SDN1/2026/004" required>
+            </div>
+            <div class="form-group">
+              <label for="nama-aset-baru">Nama Barang / Aset</label>
+              <input type="text" id="nama-aset-baru" placeholder="Contoh: Papan Tulis Whiteboard" required>
+            </div>
+            <div class="form-group">
+              <label for="kategori-aset-baru">Kategori (Dari Data Master)</label>
+              <select id="kategori-aset-baru" required></select>
+            </div>
+            <div class="form-group">
+              <label for="lokasi-aset-baru">Ruangan / Lokasi (Dari Data Master)</label>
+              <select id="lokasi-aset-baru" required></select>
+            </div>
+            <div class="form-group">
+              <label for="jumlah-aset-baru">Jumlah Unit (Kondisi Baik)</label>
+              <input type="number" id="jumlah-aset-baru" min="1" placeholder="1" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-login" style="width: auto; padding: 0.65rem 1.4rem;">+ Simpan Data Aset</button>
+        </form>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Nama Barang</th>
+                <th>Kategori</th>
+                <th>Lokasi</th>
+                <th>Total</th>
+                <th>Baik</th>
+                <th>Rusak</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-aset"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Mencatat Laporan Kerusakan Aset -->
+      <section id="laporan-kerusakan" class="content-box">
+        <h3>🔧 Mencatat Laporan Kerusakan Aset</h3>
+        <form id="form-kerusakan" style="margin-bottom: 1.5rem;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="pilih-aset-rusak">Pilih Aset yang Mengalami Kerusakan</label>
+              <select id="pilih-aset-rusak" required></select>
+            </div>
+            <div class="form-group">
+              <label for="jumlah-rusak">Jumlah Unit Rusak</label>
+              <input type="number" id="jumlah-rusak" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+              <label for="tingkat-rusak">Tingkat Kerusakan</label>
+              <select id="tingkat-rusak" required>
+                <option value="Rusak Ringan (Perlu Servis)">Rusak Ringan (Perlu Servis)</option>
+                <option value="Rusak Berat (Usul Penghapusan)">Rusak Berat (Usul Penghapusan)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ket-rusak">Keterangan / Kronologi Kerusakan</label>
+              <input type="text" id="ket-rusak" placeholder="Contoh: Lampu proyektor mati total" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-login" style="width: auto; padding: 0.65rem 1.4rem;">Kirim Laporan ke Kepala Sekolah</button>
+        </form>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Kode Aset</th>
+                <th>Nama Barang</th>
+                <th>Jumlah</th>
+                <th>Tingkat & Keterangan</th>
+                <th>Tindak Lanjut Kepsek</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-laporan-kerusakan"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. Mengajukan Pembelian Aset Baru -->
+      <section id="pengajuan-pembelian" class="content-box">
+        <h3>🛒 Mengajukan Pembelian Aset Baru</h3>
+        <form id="form-pengadaan" style="margin-bottom: 1.5rem;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nama-pengadaan">Nama Barang Usulan</label>
+              <input type="text" id="nama-pengadaan" placeholder="Contoh: Printer Canon Pixma" required>
+            </div>
+            <div class="form-group">
+              <label for="kategori-pengadaan">Kategori</label>
+              <select id="kategori-pengadaan" required></select>
+            </div>
+            <div class="form-group">
+              <label for="jumlah-usulan">Jumlah Unit</label>
+              <input type="number" id="jumlah-usulan" min="1" placeholder="1" required>
+            </div>
+            <div class="form-group">
+              <label for="estimasi-biaya">Estimasi Biaya Total (Rp)</label>
+              <input type="number" id="estimasi-biaya" placeholder="Contoh: 1500000" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="alasan-usulan">Alasan / Urgensi Pembelian</label>
+            <input type="text" id="alasan-usulan" placeholder="Contoh: Mengganti perangkat administrasi yang rusak" required>
+          </div>
+          <button type="submit" class="btn-login" style="width: auto; padding: 0.65rem 1.4rem;">Ajukan ke Kepala Sekolah</button>
+        </form>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Nama Barang</th>
+                <th>Jumlah</th>
+                <th>Estimasi Biaya</th>
+                <th>Status Persetujuan & Dana</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-riwayat-pengadaan"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5. Mengelola Data Master (Kategori & Lokasi) -->
+      <div class="form-grid" id="data-master">
+        <section class="content-box">
+          <h3>🗂️ Data Master: Kategori Aset</h3>
+          <form id="form-master-kategori" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <input type="text" id="input-kategori-baru" placeholder="Nama kategori baru..." required style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-primary);">
+            <button type="submit" class="btn-login" style="width: auto; margin-top: 0; padding: 0.6rem 1rem;">Tambah</button>
+          </form>
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Kategori</th>
+                <th style="width: 90px;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-master-kategori"></tbody>
+          </table>
+        </section>
+
+        <section class="content-box">
+          <h3>🏫 Data Master: Ruangan / Lokasi</h3>
+          <form id="form-master-lokasi" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <input type="text" id="input-lokasi-baru" placeholder="Nama ruangan baru..." required style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-primary);">
+            <button type="submit" class="btn-login" style="width: auto; margin-top: 0; padding: 0.6rem 1rem;">Tambah</button>
+          </form>
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Ruangan / Lokasi</th>
+                <th style="width: 90px;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-master-lokasi"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- 6. Mengelola Akun Pengguna (Tambah & Edit) -->
+      <section id="kelola-akun" class="content-box">
+        <h3>👤 Mengelola Akun Pengguna Sistem</h3>
+        <form id="form-tambah-akun" style="margin-bottom: 1.5rem;">
+          <input type="hidden" id="akun-edit-index" value="">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="akun-nama">Nama Lengkap & Gelar</label>
+              <input type="text" id="akun-nama" placeholder="Contoh: Bpk. Dedi Kurniawan, S.Pd." required>
+            </div>
+            <div class="form-group">
+              <label for="akun-role">Hak Akses (Role)</label>
+              <select id="akun-role" required>
+                <option value="Admin">Admin</option>
+                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                <option value="Sekretaris Sekolah">Sekretaris Sekolah</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="akun-username">Username Login</label>
+              <input type="text" id="akun-username" placeholder="Contoh: admin2" required>
+            </div>
+            <div class="form-group">
+              <label for="akun-password">Password</label>
+              <input type="text" id="akun-password" placeholder="Minimal 6 karakter" required>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <button type="submit" id="btn-submit-akun" class="btn-login" style="width: auto; padding: 0.65rem 1.4rem;">+ Buat Akun Pengguna</button>
+            <button type="button" id="btn-batal-akun" onclick="batalEditAkun()" class="btn-login" style="display: none; width: auto; padding: 0.65rem 1.2rem; background-color: #6b7280;">Batal</button>
+          </div>
+        </form>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Lengkap</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-akun"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,18 +1,13 @@
-// 1. Daftar akun resmi untuk 3 aktor manajemen aset
-const daftarAkun = [
+const USERS_STORAGE_KEY = "sim_users_sdn1_garawangi";
+
+// 1. Akun default sesuai 3 aktor pada Use Case Diagram
+const akunDefault = [
   {
-    username: "sarpras",
-    password: "sarpras123",
-    nama: "Bpk. Ahmad (Sarpras)",
-    role: "Petugas Sarpras",
-    halaman: "dashboard-sarpras.html"
-  },
-  {
-    username: "sekretaris",
-    password: "sekretaris123",
-    nama: "Ibu Siti Rahmawati, S.AP.",
-    role: "Sekretaris Sekolah",
-    halaman: "dashboard-sekretaris.html"
+    username: "admin",
+    password: "admin123",
+    nama: "Bpk. Ahmad",
+    role: "Admin",
+    halaman: "dashboard-admin.html"
   },
   {
     username: "kepsek",
@@ -20,10 +15,30 @@ const daftarAkun = [
     nama: "Bpk. H. Mulyana, M.Pd.",
     role: "Kepala Sekolah",
     halaman: "dashboard-kepsek.html"
+  },
+  {
+    username: "sekretaris",
+    password: "sekretaris123",
+    nama: "Ibu Siti Rahmawati, S.AP.",
+    role: "Sekretaris Sekolah",
+    halaman: "dashboard-sekretaris.html"
   }
 ];
 
-// 2. Tangkap elemen form dan pesan error dari index.html
+function ambilDaftarAkun() {
+  const tersimpan = localStorage.getItem(USERS_STORAGE_KEY);
+  if (!tersimpan) {
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(akunDefault));
+    return akunDefault;
+  }
+  return JSON.parse(tersimpan);
+}
+
+function simpanDaftarAkun(daftarBaru) {
+  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(daftarBaru));
+}
+
+// 2. Proses Login
 const loginForm = document.getElementById("login-form");
 const errorMsg = document.getElementById("error-msg");
 
@@ -33,16 +48,17 @@ if (loginForm) {
 
     const inputUser = document.getElementById("username").value.trim().toLowerCase();
     const inputPass = document.getElementById("password").value.trim();
+    const daftarAkun = ambilDaftarAkun();
 
     const akunCocok = daftarAkun.find(
-      (akun) => akun.username === inputUser && akun.password === inputPass
+      (akun) => akun.username.toLowerCase() === inputUser && akun.password === inputPass
     );
 
     if (akunCocok) {
       localStorage.setItem("sesiLogin", JSON.stringify(akunCocok));
       window.location.href = akunCocok.halaman;
     } else {
-      errorMsg.textContent = "Username atau Password salah! Cek kembali akun demo di bawah.";
+      errorMsg.textContent = "Username atau Password salah! Silakan periksa kembali.";
       errorMsg.style.display = "block";
     }
   });
@@ -54,25 +70,28 @@ function logout() {
   window.location.href = "index.html";
 }
 
-// 4. Proteksi Otomatis Halaman Sesuai Hak Akses
+// 4. Proteksi Halaman & Tampilkan Nama User yang Sedang Login
 (function proteksiHalaman() {
   const path = window.location.pathname;
   const namaFile = path.substring(path.lastIndexOf("/") + 1);
 
   if (namaFile.startsWith("dashboard-")) {
     const sesi = JSON.parse(localStorage.getItem("sesiLogin"));
-    
+
     if (!sesi) {
       alert("⚠️ Akses ditolak! Silakan login terlebih dahulu.");
       window.location.href = "index.html";
     } else if (sesi.halaman !== namaFile) {
       alert(`⚠️ Hak akses tidak sesuai! Anda login sebagai ${sesi.role}.`);
       window.location.href = sesi.halaman;
+    } else {
+      const elNama = document.getElementById("nama-user-login");
+      if (elNama) elNama.textContent = sesi.nama;
     }
   }
-})(); // <-- Penutup proteksiHalaman di sini
+})();
 
-// 5. Logika Ganti Tema Monochrome (Di luar proteksiHalaman agar bisa diklik)
+// 5. Logika Tema Monochrome (Matahari = Terang, Bulan = Gelap)
 function terapkanTema(tema) {
   const tombolTema = document.getElementById("theme-toggle");
   if (tema === "dark") {
@@ -91,5 +110,4 @@ function toggleTema() {
   terapkanTema(temaBaru);
 }
 
-// Jalankan tema tersimpan otomatis setiap kali halaman dibuka
 terapkanTema(localStorage.getItem("temaMonochrome") || "light");
