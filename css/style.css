@@ -1,0 +1,135 @@
+/* Palet Warna Monochrome - Mode Terang (Default / Matahari) */
+:root {
+  --bg-page: #f4f4f5;
+  --bg-surface: #ffffff;
+  --bg-sidebar: #ffffff;
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --border-color: #e4e4e7;
+  --accent-bg: #18181b;
+  --accent-hover: #27272a;
+  --accent-text: #ffffff;
+  --table-head: #f4f4f5;
+  --hover-bg: #f4f4f5;
+}
+
+/* Palet Warna Monochrome - Mode Gelap (Bulan) */
+[data-theme="dark"] {
+  --bg-page: #09090b;
+  --bg-surface: #121214;
+  --bg-sidebar: #121214;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --border-color: #27272a;
+  --accent-bg: #fafafa;
+  --accent-hover: #e4e4e7;
+  --accent-text: #09090b;
+  --table-head: #18181b;
+  --hover-bg: #1c1c1f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Halaman Login */
+.login-container {
+  max-width: 400px;
+  margin: 6vh auto;
+  background-color: var(--bg-surface);
+  padding: 2.2rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.login-container h2 {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.login-container > p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--text-primary);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--accent-bg);
+  color: var(--accent-text);
+  border: 1px solid var(--accent-bg);
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-login:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Tombol Switch Matahari / Bulan */
+.btn-theme {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-theme:hover {
+  border-color: var(--text-primary);
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - SIM Manajemen Aset SDN 1 Garawangi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="login-container">
+    <button type="button" id="theme-toggle" class="btn-theme" onclick="toggleTema()" title="Ganti Mode Warna" style="position: absolute; top: 1.2rem; right: 1.2rem;">🌙</button>
+    <h2>SIM Manajemen Aset</h2>
+    <p>SDN 1 Garawangi</p>
+
+    <!-- Kotak Pesan Error -->
+    <p id="error-msg" style="display: none; background-color: #fee2e2; color: #991b1b; padding: 0.6rem; border-radius: 6px; font-size: 0.82rem; margin-bottom: 1rem; border: 1px solid #f87171;">
+    </p>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Username / NIP</label>
+        <input type="text" id="username" placeholder="Masukkan Username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan Password" required>
+      </div>
+
+      <button type="submit" class="btn-login">Masuk ke Sistem</button>
+    </form>
+
+    <!-- Kotak Info Akun Demo (Warna teks adaptif untuk Mode Gelap & Terang) -->
+    <div style="margin-top: 1.5rem; padding: 0.85rem; background-color: var(--bg-page); border: 1px dashed var(--border-color); border-radius: 6px; font-size: 0.78rem;">
+      <p style="font-weight: bold; margin-bottom: 0.4rem; color: var(--text-primary); text-align: left;">📌 Akun Demo Uji Coba:</p>
+      <ul style="padding-left: 1.2rem; color: var(--text-secondary); line-height: 1.5; text-align: left;">
+        <li><strong>Sarpras:</strong> <code>sarpras</code> / <code>sarpras123</code></li>
+        <li><strong>Sekretaris:</strong> <code>sekretaris</code> / <code>sekretaris123</code></li>
+        <li><strong>Kepsek:</strong> <code>kepsek</code> / <code>kepsek123</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
